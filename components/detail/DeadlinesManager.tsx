@@ -76,9 +76,10 @@ export default function DeadlinesManager({
 
   const startEdit = (deadline: Deadline) => {
     setEditingId(deadline.id);
+    const dateObj = typeof deadline.date === 'string' ? new Date(deadline.date) : deadline.date;
     setFormData({
       title: deadline.title,
-      date: deadline.date.toISOString().split('T')[0],
+      date: dateObj.toISOString().split('T')[0],
       type: deadline.type,
       notes: deadline.notes || '',
     });
@@ -88,11 +89,20 @@ export default function DeadlinesManager({
   // Sort deadlines: incomplete first, then by date
   const sortedDeadlines = [...deadlines].sort((a, b) => {
     if (a.completed !== b.completed) return a.completed ? 1 : -1;
-    return a.date.getTime() - b.date.getTime();
+    const dateA = typeof a.date === 'string' ? new Date(a.date) : a.date;
+    const dateB = typeof b.date === 'string' ? new Date(b.date) : b.date;
+    return dateA.getTime() - dateB.getTime();
   });
 
-  const upcomingDeadlines = deadlines.filter(d => !d.completed && d.date >= new Date());
-  const pastDeadlines = deadlines.filter(d => !d.completed && d.date < new Date());
+  const now = new Date();
+  const upcomingDeadlines = deadlines.filter(d => {
+    const deadlineDate = typeof d.date === 'string' ? new Date(d.date) : d.date;
+    return !d.completed && deadlineDate >= now;
+  });
+  const pastDeadlines = deadlines.filter(d => {
+    const deadlineDate = typeof d.date === 'string' ? new Date(d.date) : d.date;
+    return !d.completed && deadlineDate < now;
+  });
 
   return (
     <div className="bg-white rounded-lg shadow-md border border-slate-200 p-6">
