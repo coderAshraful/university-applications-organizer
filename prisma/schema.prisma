@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model University {
+  id                    String      @id @default(cuid())
+  name                  String
+  location              String
+  program               String
+  status                String      @default("considering") // considering, applied, accepted, rejected, waitlisted, enrolled
+  category              String?     // reach, target, safety
+  ranking               Int?
+  acceptanceRate        Float?
+  websiteUrl            String?
+  notes                 String?
+  researchNotes         String?
+  applicationDeadline   DateTime?
+  earlyDeadline         DateTime?
+  decisionDate          DateTime?
+  tuition               Float?
+  applicationFee        Float?
+  estimatedCostOfLiving Float?
+  financialAidDeadline  DateTime?
+  scholarshipNotes      String?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  requirements          Requirement[]
+  deadlines             Deadline[]
+}
+
+model Requirement {
+  id           String    @id @default(cuid())
+  universityId String
+  type         String    // essay, test_score, recommendation, transcript, portfolio, etc.
+  title        String
+  description  String?
+  completed    Boolean   @default(false)
+  deadline     DateTime?
+  notes        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  university   University @relation(fields: [universityId], references: [id], onDelete: Cascade)
+
+  @@index([universityId])
+}
+
+model Deadline {
+  id           String    @id @default(cuid())
+  universityId String
+  title        String
+  date         DateTime
+  type         String    // application, financial_aid, scholarship, decision, deposit, housing, etc.
+  description  String?
+  completed    Boolean   @default(false)
+  reminderDays Int?      // days before deadline to send reminder
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  university   University @relation(fields: [universityId], references: [id], onDelete: Cascade)
+
+  @@index([universityId])
+  @@index([date])
+}

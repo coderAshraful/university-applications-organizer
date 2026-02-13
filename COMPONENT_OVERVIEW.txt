@@ -1,0 +1,274 @@
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                  UNIVERSITY APPLICATIONS ORGANIZER                             ║
+║                        UI Components Overview                                  ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ LAYOUT COMPONENTS (2)                                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  📱 Navigation.tsx                                                             │
+│     • Main navigation bar with links (Dashboard, Universities, Timeline)      │
+│     • Deep blue background (slate-900) with orange accents                    │
+│     • Active link highlighting                                                │
+│     • Graduation cap logo                                                     │
+│                                                                                │
+│  📄 PageHeader.tsx                                                             │
+│     • Reusable page header with title and optional description                │
+│     • Action buttons slot (e.g., Add University)                              │
+│     • Consistent styling across all pages                                     │
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ UNIVERSITY COMPONENTS (3)                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  🎴 UniversityCard.tsx                                                         │
+│     • Card display with university info                                       │
+│     • Color-coded top stripe (reach/target/safety)                            │
+│     • Status badge with color coding                                          │
+│     • Category badge                                                          │
+│     • Next deadline in orange box                                             │
+│     • Progress bar (requirements completion)                                  │
+│     • Links to detail page                                                    │
+│                                                                                │
+│  🔍 UniversityFilters.tsx                                                      │
+│     • Search input with icon                                                  │
+│     • Status dropdown filter                                                  │
+│     • Category dropdown filter                                                │
+│     • Responsive grid layout                                                  │
+│                                                                                │
+│  ➕ UniversityForm.tsx                                                         │
+│     • Modal form for add/edit                                                 │
+│     • Fields: name, location, status, category, website, portal, notes        │
+│     • Validation (required fields)                                            │
+│     • Full-screen modal with backdrop                                         │
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ DETAIL VIEW COMPONENTS (4)                                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  🏛️ UniversityHeader.tsx                                                       │
+│     • University name and location                                            │
+│     • Status selector (color-coded dropdown)                                  │
+│     • Category selector (color-coded dropdown)                                │
+│     • External links (website, application portal)                            │
+│     • Back to Universities navigation                                         │
+│                                                                                │
+│  ✅ RequirementsChecklist.tsx                                                  │
+│     • Interactive checklist with check/uncheck                                │
+│     • Add new requirement inline                                              │
+│     • Edit existing requirements                                              │
+│     • Delete requirements                                                     │
+│     • Progress bar with percentage                                            │
+│     • Green highlighting for completed items                                  │
+│                                                                                │
+│  📅 DeadlinesManager.tsx                                                       │
+│     • Add/edit/delete deadlines                                               │
+│     • Date picker and type selector                                           │
+│     • Color-coded urgency (red/orange/blue/green)                             │
+│     • Days until calculation                                                  │
+│     • Overdue detection                                                       │
+│     • Sorted list (incomplete first, then by date)                            │
+│                                                                                │
+│  📝 NotesSection.tsx                                                           │
+│     • View/Edit mode toggle                                                   │
+│     • Large textarea for notes                                                │
+│     • Character count                                                         │
+│     • Save/Cancel buttons                                                     │
+│     • Preserves whitespace and line breaks                                    │
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ DASHBOARD COMPONENTS (3)                                                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  📊 StatsOverview.tsx                                                          │
+│     • 7 metric cards (total, considering, applied, etc.)                      │
+│     • Color-coded icons                                                       │
+│     • Percentage calculations                                                 │
+│     • Responsive grid (1/2/4 columns)                                         │
+│                                                                                │
+│  ⏰ UpcomingDeadlines.tsx                                                      │
+│     • Time range selector (7/14/30 days)                                      │
+│     • Color-coded urgency                                                     │
+│     • Days until display (Today, Tomorrow, X days)                            │
+│     • Links to university detail pages                                        │
+│     • Deadline type badges                                                    │
+│     • Empty state message                                                     │
+│                                                                                │
+│  ⚡ QuickActions.tsx                                                           │
+│     • Add University button                                                   │
+│     • View All Universities link                                              │
+│     • Timeline link                                                           │
+│     • Pro tips section                                                        │
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                              COLOR SYSTEM                                      ║
+╠════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                ║
+║  PRIMARY COLORS (Deep Blue)                                                    ║
+║  • slate-900 - Navigation background                                          ║
+║  • blue-500/600/700 - Target category, in-progress status                     ║
+║                                                                                ║
+║  ACCENT COLORS (Warm Orange)                                                   ║
+║  • orange-500/600 - Primary buttons, active links, focus rings                ║
+║  • orange-50/100 - Urgent deadline backgrounds                                ║
+║                                                                                ║
+║  STATUS COLORS                                                                 ║
+║  • Considering: slate (gray)                                                  ║
+║  • Applied: purple                                                            ║
+║  • Accepted: green                                                            ║
+║  • Rejected: red                                                              ║
+║  • Waitlisted: yellow                                                         ║
+║  • Enrolled: orange                                                           ║
+║                                                                                ║
+║  CATEGORY COLORS                                                               ║
+║  • Reach: red (challenging schools)                                           ║
+║  • Target: blue (likely matches)                                              ║
+║  • Safety: green (safe bets)                                                  ║
+║                                                                                ║
+║  DEADLINE URGENCY                                                              ║
+║  • Overdue/≤3 days: red                                                       ║
+║  • 4-7 days: orange                                                           ║
+║  • 8+ days: blue                                                              ║
+║  • Completed: green                                                           ║
+║                                                                                ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                          FILE STRUCTURE                                        ║
+╠════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                ║
+║  components/                                                                   ║
+║  ├── layout/                                                                   ║
+║  │   ├── Navigation.tsx                                                       ║
+║  │   ├── PageHeader.tsx                                                       ║
+║  │   └── index.ts                                                             ║
+║  ├── universities/                                                             ║
+║  │   ├── UniversityCard.tsx                                                   ║
+║  │   ├── UniversityFilters.tsx                                                ║
+║  │   ├── UniversityForm.tsx                                                   ║
+║  │   └── index.ts                                                             ║
+║  ├── detail/                                                                   ║
+║  │   ├── UniversityHeader.tsx                                                 ║
+║  │   ├── RequirementsChecklist.tsx                                            ║
+║  │   ├── DeadlinesManager.tsx                                                 ║
+║  │   ├── NotesSection.tsx                                                     ║
+║  │   └── index.ts                                                             ║
+║  └── dashboard/                                                                ║
+║      ├── StatsOverview.tsx                                                    ║
+║      ├── UpcomingDeadlines.tsx                                                ║
+║      ├── QuickActions.tsx                                                     ║
+║      └── index.ts                                                             ║
+║                                                                                ║
+║  lib/                                                                          ║
+║  └── utils.ts              (cn, formatDate, getDaysUntil, getProgressPerc)    ║
+║                                                                                ║
+║  types/                                                                        ║
+║  └── index.ts              (ApplicationStatus, UniversityCategory, etc.)      ║
+║                                                                                ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                        PAGE COMPOSITION                                        ║
+╠════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                ║
+║  DASHBOARD PAGE                                                                ║
+║  ┌──────────────────────────────────────────────────────────────────────┐    ║
+║  │ Navigation (global)                                                  │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ PageHeader (title: "Dashboard", actions: none)                       │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ StatsOverview (7 metric cards)                                       │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ UpcomingDeadlines (with time range selector)                         │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ QuickActions (3 action cards + pro tips)                             │    ║
+║  └──────────────────────────────────────────────────────────────────────┘    ║
+║                                                                                ║
+║  UNIVERSITIES LIST PAGE                                                        ║
+║  ┌──────────────────────────────────────────────────────────────────────┐    ║
+║  │ Navigation (global)                                                  │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ PageHeader (title: "Universities", actions: Add University button)   │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ UniversityFilters (search, status, category)                         │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ Grid of UniversityCards (3 columns on desktop)                       │    ║
+║  └──────────────────────────────────────────────────────────────────────┘    ║
+║  [UniversityForm modal - shown when adding/editing]                           ║
+║                                                                                ║
+║  UNIVERSITY DETAIL PAGE                                                        ║
+║  ┌──────────────────────────────────────────────────────────────────────┐    ║
+║  │ Navigation (global)                                                  │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ UniversityHeader (name, location, status/category selectors)         │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ Two columns:                                                         │    ║
+║  │ ┌────────────────────────┬────────────────────────┐                 │    ║
+║  │ │ RequirementsChecklist  │ DeadlinesManager       │                 │    ║
+║  │ └────────────────────────┴────────────────────────┘                 │    ║
+║  ├──────────────────────────────────────────────────────────────────────┤    ║
+║  │ NotesSection (full width)                                            │    ║
+║  └──────────────────────────────────────────────────────────────────────┘    ║
+║                                                                                ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                        KEY FEATURES                                            ║
+╠════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                ║
+║  ✅ Fully responsive (mobile, tablet, desktop)                                 ║
+║  ✅ TypeScript with strict typing                                              ║
+║  ✅ Tailwind CSS with custom color system                                      ║
+║  ✅ Accessible (semantic HTML, ARIA labels, keyboard navigation)               ║
+║  ✅ Interactive (hover effects, transitions, animations)                       ║
+║  ✅ Form validation                                                            ║
+║  ✅ Empty states and loading states ready                                      ║
+║  ✅ Consistent design language                                                 ║
+║  ✅ Icon system (lucide-react)                                                 ║
+║  ✅ Modular and reusable                                                       ║
+║                                                                                ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                        DOCUMENTATION                                           ║
+╠════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                ║
+║  📖 COMPONENTS_README.md                                                       ║
+║     • Comprehensive component documentation                                   ║
+║     • Props reference for all components                                      ║
+║     • Usage examples                                                          ║
+║     • Design system reference                                                 ║
+║                                                                                ║
+║  📖 COMPONENT_STRUCTURE.md                                                     ║
+║     • File organization and architecture                                      ║
+║     • Import patterns                                                         ║
+║     • State management patterns                                               ║
+║     • Color system reference                                                  ║
+║     • Testing considerations                                                  ║
+║                                                                                ║
+║  📖 COMPONENTS_SUMMARY.md                                                      ║
+║     • Quick overview of all components                                        ║
+║     • File listing                                                            ║
+║     • Dependencies                                                            ║
+║     • Next steps                                                              ║
+║                                                                                ║
+║  📖 COMPONENT_OVERVIEW.txt (this file)                                         ║
+║     • Visual overview and quick reference                                     ║
+║                                                                                ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+Total Components: 12
+Total Index Files: 4
+Total Lines of Code: ~3,500
+Dependencies: lucide-react, clsx, tailwind-merge
+
+Status: ✅ Ready for integration with API routes
