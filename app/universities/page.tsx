@@ -21,11 +21,17 @@ export default function UniversitiesPage() {
     category: 'all',
   });
 
-  // Check if should auto-open modal
+  // Check if should auto-open modal or apply status filter
   useEffect(() => {
     const shouldAdd = searchParams.get('add');
+    const statusFilter = searchParams.get('status');
+
     if (shouldAdd === 'true') {
       setIsFormOpen(true);
+    }
+
+    if (statusFilter) {
+      setFilters((prev) => ({ ...prev, status: statusFilter }));
     }
   }, [searchParams]);
 
