@@ -1,19 +1,14 @@
 'use client';
 
-import { ApplicationStatus, UniversityCategory } from '@/types';
-import { MapPin, ExternalLink, ArrowLeft } from 'lucide-react';
+import { University, ApplicationStatus, UniversityCategory } from '@/types';
+import { MapPin, ExternalLink, ArrowLeft, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 interface UniversityHeaderProps {
-  name: string;
-  location: string;
-  status: ApplicationStatus;
-  category: UniversityCategory;
-  website?: string;
-  applicationPortal?: string;
-  onStatusChange: (status: ApplicationStatus) => void;
-  onCategoryChange: (category: UniversityCategory) => void;
+  university: University;
+  onUpdate: (field: string, value: any) => void;
+  onDelete: () => void;
 }
 
 const statusOptions: { value: ApplicationStatus; label: string; color: string }[] = [
@@ -32,17 +27,22 @@ const categoryOptions: { value: UniversityCategory; label: string; color: string
 ];
 
 export default function UniversityHeader({
-  name,
-  location,
-  status,
-  category,
-  website,
-  applicationPortal,
-  onStatusChange,
-  onCategoryChange,
+  university,
+  onUpdate,
+  onDelete,
 }: UniversityHeaderProps) {
+  const { name, location, status, category, websiteUrl, notes } = university;
+
   const currentStatus = statusOptions.find(opt => opt.value === status);
   const currentCategory = categoryOptions.find(opt => opt.value === category);
+
+  const handleStatusChange = (newStatus: ApplicationStatus) => {
+    onUpdate('status', newStatus);
+  };
+
+  const handleCategoryChange = (newCategory: UniversityCategory) => {
+    onUpdate('category', newCategory);
+  };
 
   return (
     <div className="bg-white border-b border-slate-200 shadow-sm">
@@ -67,9 +67,9 @@ export default function UniversityHeader({
 
             {/* Links */}
             <div className="flex flex-wrap gap-3">
-              {website && (
+              {websiteUrl && (
                 <a
-                  href={website}
+                  href={websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-sm font-medium"
@@ -78,17 +78,13 @@ export default function UniversityHeader({
                   Visit Website
                 </a>
               )}
-              {applicationPortal && (
-                <a
-                  href={applicationPortal}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors text-sm font-medium shadow-md"
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Application Portal
-                </a>
-              )}
+              <button
+                onClick={onDelete}
+                className="inline-flex items-center px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors text-sm font-medium"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete University
+              </button>
             </div>
           </div>
 
@@ -101,7 +97,7 @@ export default function UniversityHeader({
               </label>
               <select
                 value={status}
-                onChange={(e) => onStatusChange(e.target.value as ApplicationStatus)}
+                onChange={(e) => handleStatusChange(e.target.value as ApplicationStatus)}
                 className={cn(
                   "w-full px-4 py-2.5 rounded-lg border-2 font-semibold transition-all cursor-pointer text-sm",
                   currentStatus?.color
@@ -121,8 +117,8 @@ export default function UniversityHeader({
                 Category
               </label>
               <select
-                value={category}
-                onChange={(e) => onCategoryChange(e.target.value as UniversityCategory)}
+                value={category || 'target'}
+                onChange={(e) => handleCategoryChange(e.target.value as UniversityCategory)}
                 className={cn(
                   "w-full px-4 py-2.5 rounded-lg border-2 font-semibold transition-all cursor-pointer text-sm",
                   currentCategory?.color
