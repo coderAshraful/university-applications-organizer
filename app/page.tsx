@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import StatsOverview from '@/components/dashboard/StatsOverview';
 import UpcomingDeadlines from '@/components/dashboard/UpcomingDeadlines';
 import QuickActions from '@/components/dashboard/QuickActions';
@@ -83,12 +84,12 @@ export default async function DashboardPage() {
                 Get started by adding your first university. Track deadlines, requirements,
                 and stay organized throughout your application journey.
               </p>
-              <a
+              <Link
                 href="/universities"
                 className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors shadow-md hover:shadow-lg"
               >
                 Add Your First University
-              </a>
+              </Link>
             </div>
           </div>
         )}

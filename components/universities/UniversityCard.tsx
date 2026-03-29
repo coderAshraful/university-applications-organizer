@@ -7,6 +7,7 @@ import { MapPin, Calendar, CheckCircle2, Clock } from 'lucide-react';
 
 interface UniversityCardProps {
   university: University;
+  onDelete?: (id: string) => void;
 }
 
 const statusColors: Record<string, string> = {
@@ -45,7 +46,7 @@ const categoryLabels: Record<string, string> = {
   'safety': 'Safety',
 };
 
-export default function UniversityCard({ university }: UniversityCardProps) {
+export default function UniversityCard({ university, onDelete }: UniversityCardProps) {
   const completedRequirements = university.requirements?.filter(r => r.completed).length || 0;
   const totalRequirements = university.requirements?.length || 0;
   const progressPercentage = getProgressPercentage(completedRequirements, totalRequirements);

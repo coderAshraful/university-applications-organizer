@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { University } from '@/types';
 import UniversityCard from '@/components/universities/UniversityCard';
@@ -9,7 +9,7 @@ import UniversityForm from '@/components/universities/UniversityForm';
 import { Button } from '@/components/ui/button';
 import { Plus, Loader2 } from 'lucide-react';
 
-export default function UniversitiesPage() {
+function UniversitiesContent() {
   const searchParams = useSearchParams();
   const [universities, setUniversities] = useState<University[]>([]);
   const [filteredUniversities, setFilteredUniversities] = useState<University[]>([]);
@@ -231,5 +231,13 @@ export default function UniversitiesPage() {
         />
       </div>
     </main>
+  );
+}
+
+export default function UniversitiesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>}>
+      <UniversitiesContent />
+    </Suspense>
   );
 }

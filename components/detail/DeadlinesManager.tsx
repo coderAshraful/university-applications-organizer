@@ -187,7 +187,7 @@ export default function DeadlinesManager({
       <div className="space-y-2">
         {deadlines.length === 0 ? (
           <p className="text-center text-slate-500 py-8">
-            No deadlines yet. Click "Add Deadline" to get started.
+            No deadlines yet. Click &quot;Add Deadline&quot; to get started.
           </p>
         ) : (
           sortedDeadlines.map((deadline) => {

@@ -130,7 +130,7 @@ export default function RequirementsChecklist({
       <div className="space-y-2">
         {requirements.length === 0 ? (
           <p className="text-center text-slate-500 py-8">
-            No requirements yet. Click "Add Requirement" to get started.
+            No requirements yet. Click &quot;Add Requirement&quot; to get started.
           </p>
         ) : (
           requirements.map((requirement) => (

@@ -82,7 +82,7 @@ export default function UpcomingDeadlines({ deadlines }: UpcomingDeadlinesProps)
           <div className="text-center py-8 text-slate-500">
             <Calendar className="h-12 w-12 mx-auto mb-2 opacity-50" />
             <p>No upcoming deadlines in the next {timeRange} days.</p>
-            <p className="text-sm mt-1">You're all caught up!</p>
+            <p className="text-sm mt-1">You&apos;re all caught up!</p>
           </div>
         ) : (
           filteredDeadlines.map((deadline) => {

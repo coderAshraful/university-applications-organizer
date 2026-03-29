@@ -95,7 +95,7 @@ export default function NotesSection({ notes, onSave }: NotesSectionProps) {
             <div className="flex items-center justify-center h-[200px] text-slate-400">
               <div className="text-center">
                 <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                <p>No notes yet. Click "Edit" to add notes.</p>
+                <p>No notes yet. Click &quot;Edit&quot; to add notes.</p>
               </div>
             </div>
           )}

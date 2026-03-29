@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
         id: deadline.id,
         title: deadline.title,
         date: deadline.date,
-        type: deadline.type,
+        type: deadline.type as UpcomingDeadline['type'],
         universityId: deadline.universityId,
         universityName: deadline.university.name,
         daysUntil: diffDays,

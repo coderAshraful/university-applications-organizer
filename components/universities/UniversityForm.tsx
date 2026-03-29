@@ -45,7 +45,7 @@ export default function UniversityForm({ isOpen, university, onSave, onClose }: 
           location: university.location || '',
           program: university.program || '',
           status: university.status || 'considering',
-          category: university.category || 'target',
+          category: (university.category || 'target') as UniversityCategory,
           websiteUrl: university.websiteUrl || '',
           notes: university.notes || '',
         });
