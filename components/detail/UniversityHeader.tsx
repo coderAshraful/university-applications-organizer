@@ -59,7 +59,7 @@ export default function UniversityHeader({
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
           {/* Left Side: Name and Location */}
           <div className="flex-1">
-            <h1 className="text-4xl font-bold text-slate-900 mb-2">{name}</h1>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">{name}</h1>
             <div className="flex items-center text-slate-600 mb-4">
               <MapPin className="h-5 w-5 mr-2" />
               <span className="text-lg">{location}</span>

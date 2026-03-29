@@ -57,7 +57,7 @@ export default function RequirementsChecklist({
   return (
     <div className="bg-white rounded-lg shadow-md border border-slate-200 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-slate-900">Requirements</h2>
           <p className="text-sm text-slate-600 mt-1">
@@ -173,7 +173,7 @@ export default function RequirementsChecklist({
               </div>
 
               {/* Actions */}
-              <div className="flex-shrink-0 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex-shrink-0 flex items-center space-x-1">
                 <button
                   onClick={() => startEdit(requirement)}
                   className="p-2 text-slate-400 hover:text-blue-600 transition-colors"

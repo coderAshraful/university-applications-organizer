@@ -40,7 +40,7 @@ export default function UniversityFilters({
 }: UniversityFiltersProps) {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md border border-slate-200 space-y-4">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-3">
         <div className="flex items-center space-x-2 text-slate-700">
           <Filter className="h-5 w-5" />
           <h3 className="font-semibold">Filters</h3>

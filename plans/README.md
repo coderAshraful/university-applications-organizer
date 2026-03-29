@@ -7,6 +7,7 @@ This folder stores feature plan documents for the University Applications Organi
 | File | Feature | Status |
 |------|---------|--------|
 | [01-clerk-authentication.md](./01-clerk-authentication.md) | Clerk authentication with per-user data isolation | ✅ Complete |
+| [02-mobile-responsiveness.md](./02-mobile-responsiveness.md) | Full mobile responsiveness (hamburger nav, layout fixes, touch-friendly UI) | 🔲 Pending |
 
 ## How to Add a New Plan
 

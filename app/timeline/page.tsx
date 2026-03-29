@@ -102,7 +102,7 @@ export default function TimelinePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Timeline</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-2">Timeline</h1>
           <p className="text-lg text-slate-600">
             View all your deadlines in one place
           </p>
@@ -120,7 +120,7 @@ export default function TimelinePage() {
             {/* Calendar View - Left Column */}
             <div className="lg:col-span-2">
               <Card className="p-6">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
                   <h2 className="text-2xl font-bold text-slate-900 flex items-center">
                     <CalendarIcon className="h-6 w-6 mr-2 text-orange-500" />
                     Calendar View

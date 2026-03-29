@@ -10,9 +10,11 @@ import {
   GraduationCap,
   ChevronDown,
   LogOut,
+  Menu,
+  X,
 } from 'lucide-react';
 import { useUser, useClerk, useAuth } from '@clerk/nextjs';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const navItems = [
   {
@@ -91,6 +93,16 @@ function UserMenu() {
 
 export default function Navigation() {
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user } = useUser();
+  const { signOut } = useClerk();
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  const fullName = user?.fullName || user?.emailAddresses[0]?.emailAddress || '';
+  const email = user?.emailAddresses[0]?.emailAddress || '';
 
   return (
     <nav className="bg-slate-900 text-white shadow-lg">
@@ -104,8 +116,8 @@ export default function Navigation() {
             </span>
           </Link>
 
-          {/* Navigation Links + User Menu */}
-          <div className="flex items-center space-x-1">
+          {/* Desktop Navigation Links + User Menu */}
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
@@ -127,12 +139,74 @@ export default function Navigation() {
               );
             })}
 
-            <div className="ml-3">
+            <div className="ml-3 hidden md:block">
               <UserMenu />
             </div>
           </div>
+
+          {/* Hamburger button (mobile only) */}
+          <button
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+            className="md:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-slate-700">
+          <div className="px-4 py-3 space-y-1">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              const Icon = item.icon;
+
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-all duration-200",
+                    isActive
+                      ? "bg-orange-500 text-white"
+                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                  )}
+                >
+                  <Icon className="h-5 w-5" />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="border-t border-slate-700 px-4 py-3">
+            <div className="flex items-center space-x-3 px-4 py-2 mb-1">
+              <div className="h-9 w-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-sm select-none flex-shrink-0">
+                {user
+                  ? ([user.firstName, user.lastName]
+                      .filter(Boolean)
+                      .map(n => n![0])
+                      .join('')
+                      .toUpperCase() || user.emailAddresses[0]?.emailAddress[0].toUpperCase())
+                  : ''}
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-white truncate">{fullName}</p>
+                <p className="text-xs text-slate-400 truncate">{email}</p>
+              </div>
+            </div>
+            <button
+              onClick={() => signOut({ redirectUrl: '/sign-in' })}
+              className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors font-medium"
+            >
+              <LogOut className="h-5 w-5" />
+              <span>Sign out</span>
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

@@ -349,7 +349,7 @@ export default function UniversityDetailPage() {
                 <GraduationCap className="h-5 w-5 mr-2 text-orange-500" />
                 Basic Information
               </h2>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-slate-600">Location:</span>
                   <p className="font-medium text-slate-900">{university.location}</p>

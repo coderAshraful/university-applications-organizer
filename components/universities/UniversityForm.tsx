@@ -325,7 +325,7 @@ export default function UniversityForm({ isOpen, university, onSave, onClose }: 
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end pt-4 border-t border-slate-200">
             <button
               type="button"
               onClick={onClose}

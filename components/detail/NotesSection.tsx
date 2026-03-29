@@ -36,7 +36,7 @@ export default function NotesSection({ notes, onSave }: NotesSectionProps) {
   return (
     <div className="bg-white rounded-lg shadow-md border border-slate-200 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <div className="flex items-center space-x-2">
           <FileText className="h-6 w-6 text-slate-600" />
           <h2 className="text-2xl font-bold text-slate-900">Notes</h2>

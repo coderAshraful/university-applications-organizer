@@ -107,7 +107,7 @@ export default function DeadlinesManager({
   return (
     <div className="bg-white rounded-lg shadow-md border border-slate-200 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-slate-900">Deadlines</h2>
           <p className="text-sm text-slate-600 mt-1">
@@ -138,7 +138,7 @@ export default function DeadlinesManager({
               autoFocus
               className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <input
                 type="date"
                 value={formData.date}
@@ -283,7 +283,7 @@ export default function DeadlinesManager({
                 </div>
 
                 {/* Actions */}
-                <div className="flex-shrink-0 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex-shrink-0 flex items-center space-x-1">
                   <button
                     onClick={() => startEdit(deadline)}
                     className="p-2 text-slate-400 hover:text-blue-600 transition-colors"
