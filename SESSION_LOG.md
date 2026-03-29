@@ -117,3 +117,34 @@ Chronological record of everything built, in the order it was built.
 - `components/layout/Navigation.tsx` — custom user menu: `useAuth()` (isLoaded guard → grey circle placeholder), `useUser()`, `useClerk()`, `SignedIn`/`SignedOut`, orange initial avatar, dropdown with name/email/sign-out
 
 All routes return `401` if `userId` is null (unauthenticated request).
+
+---
+
+## Session 3 — March 29, 2026: Full Mobile Responsiveness
+
+**Commits:** `7998c5f`
+
+### What Was Built
+
+**Goal:** Fix all overflow and layout issues on mobile (375px phones through tablets). Every page now looks polished at all screen sizes.
+
+**Navigation — hamburger menu (`components/layout/Navigation.tsx`):**
+- Desktop nav links and user menu wrapped in `hidden md:flex` / `hidden md:block` — unchanged on desktop
+- Added `mobileMenuOpen` state; closes automatically on pathname change via `useEffect`
+- Hamburger (`Menu`) / close (`X`) toggle button, `md:hidden`
+- Mobile overlay panel below navbar: all 3 nav links with active state, divider, user avatar + name/email, Sign Out button
+
+**Responsive layouts (14 files total):**
+- `components/layout/PageHeader.tsx` — inner div stacks vertically on mobile (`flex-col gap-3 sm:flex-row`); title `text-2xl sm:text-3xl`
+- `components/dashboard/UpcomingDeadlines.tsx` — header stacks on mobile
+- `components/dashboard/StatsOverview.tsx` — grid gains `sm:grid-cols-2` breakpoint (was jumping 1→4 columns)
+- `components/detail/RequirementsChecklist.tsx` — header stacks; edit/delete buttons always visible (removed `opacity-0 group-hover:opacity-100`)
+- `components/detail/DeadlinesManager.tsx` — header stacks; date/type form grid `grid-cols-1 sm:grid-cols-2`; edit/delete always visible
+- `components/detail/NotesSection.tsx` — header stacks on mobile
+- `components/detail/UniversityHeader.tsx` — title `text-2xl sm:text-3xl lg:text-4xl`
+- `components/universities/UniversityFilters.tsx` — header stacks on mobile
+- `components/universities/UniversityForm.tsx` — Cancel/Save buttons `flex-col-reverse gap-2 sm:flex-row` (Save on top on mobile)
+- `app/universities/[id]/page.tsx` — Basic Info grid `grid-cols-1 sm:grid-cols-2`
+- `app/timeline/page.tsx` — page title `text-2xl sm:text-4xl`; Calendar View card header stacks on mobile
+- `app/sign-in/[[...sign-in]]/page.tsx` — title `text-2xl sm:text-3xl`; logo spacing `mb-4 sm:mb-8`
+- `app/sign-up/[[...sign-up]]/page.tsx` — same as sign-in

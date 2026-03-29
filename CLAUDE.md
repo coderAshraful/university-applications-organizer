@@ -233,7 +233,7 @@ The app is deployed on **Vercel** connected to this GitHub repository.
 - `app/layout.tsx`: wraps app in `<ClerkProvider>`
 - `app/sign-in/[[...sign-in]]/page.tsx` + `app/sign-up/[[...sign-up]]/page.tsx`: embedded Clerk UI
 - API routes: call `auth()` from `@clerk/nextjs/server`, return 401 if no `userId`, scope all Prisma queries by `userId`
-- `components/layout/Navigation.tsx`: uses `useAuth()` (`isLoaded` guard), `useUser()`, `useClerk()`, `SignedIn`/`SignedOut` components
+- `components/layout/Navigation.tsx`: uses `useAuth()` (`isLoaded` guard), `useUser()`, `useClerk()`, `SignedIn`/`SignedOut` components; hamburger menu on mobile (≤md) opens full-width overlay with nav links + user info + sign out
 
 ---
 
@@ -281,13 +281,14 @@ university-applications-organizer/
 
 ---
 
-## Current Project Status (as of 2026-03-28)
+## Current Project Status (as of 2026-03-29)
 
 - [x] Initial app: Next.js 15 + Prisma + SQLite + all UI components
 - [x] All pages connected to API routes (dashboard, universities list, detail, timeline)
 - [x] Deployed to Vercel
 - [x] Migrated database from SQLite to Neon PostgreSQL
 - [x] Added Clerk authentication with per-user data isolation
+- [x] Full mobile responsiveness (hamburger nav, responsive layouts, touch-friendly UI)
 - [ ] Email/calendar reminders for deadlines
 - [ ] PDF export of application summary
 - [ ] Drag-and-drop requirement ordering
