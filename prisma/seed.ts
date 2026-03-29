@@ -13,6 +13,7 @@ async function main() {
   // Sample University 1: MIT (Reach)
   const mit = await prisma.university.create({
     data: {
+      userId: 'seed_user',
       name: 'Massachusetts Institute of Technology',
       location: 'Cambridge, MA',
       program: 'Computer Science',
@@ -98,6 +99,7 @@ async function main() {
   // Sample University 2: Stanford (Reach)
   const stanford = await prisma.university.create({
     data: {
+      userId: 'seed_user',
       name: 'Stanford University',
       location: 'Stanford, CA',
       program: 'Artificial Intelligence',
@@ -165,6 +167,7 @@ async function main() {
   // Sample University 3: University of Washington (Target)
   const uw = await prisma.university.create({
     data: {
+      userId: 'seed_user',
       name: 'University of Washington',
       location: 'Seattle, WA',
       program: 'Computer Science & Engineering',
@@ -239,6 +242,7 @@ async function main() {
   // Sample University 4: Georgia Tech (Target)
   const gatech = await prisma.university.create({
     data: {
+      userId: 'seed_user',
       name: 'Georgia Institute of Technology',
       location: 'Atlanta, GA',
       program: 'Computer Science',
@@ -281,6 +285,7 @@ async function main() {
   // Sample University 5: Purdue University (Safety)
   const purdue = await prisma.university.create({
     data: {
+      userId: 'seed_user',
       name: 'Purdue University',
       location: 'West Lafayette, IN',
       program: 'Computer Science',

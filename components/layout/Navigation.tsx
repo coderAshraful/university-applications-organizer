@@ -7,8 +7,12 @@ import {
   LayoutDashboard,
   School,
   Calendar,
-  GraduationCap
+  GraduationCap,
+  ChevronDown,
+  LogOut,
 } from 'lucide-react';
+import { useUser, useClerk, useAuth } from '@clerk/nextjs';
+import { useState } from 'react';
 
 const navItems = [
   {
@@ -28,6 +32,63 @@ const navItems = [
   },
 ];
 
+function UserMenu() {
+  const { user } = useUser();
+  const { signOut } = useClerk();
+  const { isLoaded } = useAuth();
+  const [open, setOpen] = useState(false);
+
+  if (!isLoaded) {
+    return <div className="h-9 w-9 rounded-full bg-slate-700 animate-pulse" />;
+  }
+
+  const initials = user
+    ? [user.firstName, user.lastName]
+        .filter(Boolean)
+        .map(n => n![0])
+        .join('')
+        .toUpperCase() || user.emailAddresses[0]?.emailAddress[0].toUpperCase()
+    : '';
+
+  const fullName = user?.fullName || user?.emailAddresses[0]?.emailAddress || '';
+  const email = user?.emailAddresses[0]?.emailAddress || '';
+
+  return (
+    <div className="relative">
+        <button
+          onClick={() => setOpen(prev => !prev)}
+          className="flex items-center space-x-1 focus:outline-none"
+        >
+          <div className="h-9 w-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-sm select-none">
+            {initials}
+          </div>
+          <ChevronDown className="h-4 w-4 text-slate-300" />
+        </button>
+
+        {open && (
+          <>
+            {/* Backdrop */}
+            <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+            {/* Dropdown */}
+            <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-slate-200 z-20 overflow-hidden">
+              <div className="px-4 py-3 border-b border-slate-100">
+                <p className="text-sm font-semibold text-slate-900 truncate">{fullName}</p>
+                <p className="text-xs text-slate-500 truncate">{email}</p>
+              </div>
+              <button
+                onClick={() => signOut({ redirectUrl: '/sign-in' })}
+                className="w-full flex items-center space-x-2 px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Sign out</span>
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+  );
+}
+
 export default function Navigation() {
   const pathname = usePathname();
 
@@ -43,8 +104,8 @@ export default function Navigation() {
             </span>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="flex space-x-1">
+          {/* Navigation Links + User Menu */}
+          <div className="flex items-center space-x-1">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
@@ -65,6 +126,10 @@ export default function Navigation() {
                 </Link>
               );
             })}
+
+            <div className="ml-3">
+              <UserMenu />
+            </div>
           </div>
         </div>
       </div>

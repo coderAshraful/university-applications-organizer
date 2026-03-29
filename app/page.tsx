@@ -1,14 +1,15 @@
 import Link from 'next/link';
+import { auth } from '@clerk/nextjs/server';
 import StatsOverview from '@/components/dashboard/StatsOverview';
 import UpcomingDeadlines from '@/components/dashboard/UpcomingDeadlines';
 import QuickActions from '@/components/dashboard/QuickActions';
 import { DashboardStats, UpcomingDeadline } from '@/types';
 import { prisma } from '@/lib/db';
 
-async function getDashboardData() {
+async function getDashboardData(userId: string) {
   try {
     // Fetch stats directly from DB
-    const universities = await prisma.university.findMany({ select: { status: true } });
+    const universities = await prisma.university.findMany({ where: { userId }, select: { status: true } });
     const stats: DashboardStats = {
       total: universities.length,
       considering: universities.filter(u => u.status === 'considering').length,
@@ -23,7 +24,7 @@ async function getDashboardData() {
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + 30);
     const rawDeadlines = await prisma.deadline.findMany({
-      where: { completed: false, date: { lte: futureDate } },
+      where: { completed: false, date: { lte: futureDate }, university: { userId } },
       include: { university: { select: { id: true, name: true } } },
       orderBy: { date: 'asc' },
     });
@@ -44,7 +45,8 @@ async function getDashboardData() {
 }
 
 export default async function DashboardPage() {
-  const { stats, deadlines } = await getDashboardData();
+  const { userId } = await auth();
+  const { stats, deadlines } = await getDashboardData(userId!);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">

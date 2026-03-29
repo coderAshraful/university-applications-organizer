@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { UpdateUniversityInput } from '@/types';
 
@@ -11,11 +12,14 @@ export async function GET(
   request: NextRequest,
   context: RouteContext
 ) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { id } = await context.params;
 
     const university = await prisma.university.findUnique({
-      where: { id },
+      where: { id, userId },
       include: {
         requirements: {
           orderBy: { deadline: 'asc' },
@@ -48,13 +52,16 @@ export async function PATCH(
   request: NextRequest,
   context: RouteContext
 ) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { id } = await context.params;
     const body: UpdateUniversityInput = await request.json();
 
-    // Check if university exists
+    // Check if university exists and belongs to this user
     const existingUniversity = await prisma.university.findUnique({
-      where: { id },
+      where: { id, userId },
     });
 
     if (!existingUniversity) {
@@ -80,7 +87,7 @@ export async function PATCH(
     }
 
     const university = await prisma.university.update({
-      where: { id },
+      where: { id, userId },
       data,
       include: {
         requirements: true,
@@ -103,12 +110,15 @@ export async function DELETE(
   request: NextRequest,
   context: RouteContext
 ) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { id } = await context.params;
 
-    // Check if university exists
+    // Check if university exists and belongs to this user
     const existingUniversity = await prisma.university.findUnique({
-      where: { id },
+      where: { id, userId },
     });
 
     if (!existingUniversity) {
@@ -120,7 +130,7 @@ export async function DELETE(
 
     // Delete university (cascade will delete related requirements and deadlines)
     await prisma.university.delete({
-      where: { id },
+      where: { id, userId },
     });
 
     return NextResponse.json(

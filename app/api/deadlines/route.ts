@@ -1,16 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { CreateDeadlineInput, UpcomingDeadline } from '@/types';
 
 // GET /api/deadlines - Get all deadlines with university info
 export async function GET(request: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { searchParams } = new URL(request.url);
     const upcomingDays = searchParams.get('upcoming');
 
-    // Build where clause for upcoming deadlines
+    // Build where clause for upcoming deadlines scoped to this user's universities
     const where: any = {
       completed: false,
+      university: { userId },
     };
 
     if (upcomingDays) {
@@ -69,6 +74,9 @@ export async function GET(request: NextRequest) {
 
 // POST /api/deadlines - Create a new deadline
 export async function POST(request: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const body: CreateDeadlineInput = await request.json();
 
@@ -80,9 +88,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if university exists
+    // Check if university exists and belongs to this user
     const university = await prisma.university.findUnique({
-      where: { id: body.universityId },
+      where: { id: body.universityId, userId },
     });
 
     if (!university) {

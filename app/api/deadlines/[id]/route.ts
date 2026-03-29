@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { UpdateDeadlineInput } from '@/types';
 
@@ -11,16 +12,20 @@ export async function PATCH(
   request: NextRequest,
   context: RouteContext
 ) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { id } = await context.params;
     const body: UpdateDeadlineInput = await request.json();
 
-    // Check if deadline exists
+    // Check if deadline exists and belongs to this user's university
     const existingDeadline = await prisma.deadline.findUnique({
       where: { id },
+      include: { university: { select: { userId: true } } },
     });
 
-    if (!existingDeadline) {
+    if (!existingDeadline || existingDeadline.university.userId !== userId) {
       return NextResponse.json(
         { error: 'Deadline not found' },
         { status: 404 }
@@ -53,15 +58,19 @@ export async function DELETE(
   request: NextRequest,
   context: RouteContext
 ) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { id } = await context.params;
 
-    // Check if deadline exists
+    // Check if deadline exists and belongs to this user's university
     const existingDeadline = await prisma.deadline.findUnique({
       where: { id },
+      include: { university: { select: { userId: true } } },
     });
 
-    if (!existingDeadline) {
+    if (!existingDeadline || existingDeadline.university.userId !== userId) {
       return NextResponse.json(
         { error: 'Deadline not found' },
         { status: 404 }

@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { CreateUniversityInput } from '@/types';
 
 // GET /api/universities - Get all universities
 export async function GET(request: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const category = searchParams.get('category');
 
-    const where: any = {};
+    const where: any = { userId };
     if (status) where.status = status;
     if (category) where.category = category;
 
@@ -41,6 +45,9 @@ export async function GET(request: NextRequest) {
 
 // POST /api/universities - Create a new university
 export async function POST(request: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const body: CreateUniversityInput = await request.json();
 
@@ -53,7 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Convert string dates to Date objects
-    const data: any = { ...body };
+    const data: any = { ...body, userId };
     if (data.applicationDeadline) {
       data.applicationDeadline = new Date(data.applicationDeadline);
     }

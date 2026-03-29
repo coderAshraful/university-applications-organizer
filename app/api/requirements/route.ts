@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { CreateRequirementInput } from '@/types';
 
 // POST /api/requirements - Create a new requirement
 export async function POST(request: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const body: CreateRequirementInput = await request.json();
 
@@ -15,9 +19,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if university exists
+    // Check if university exists and belongs to this user
     const university = await prisma.university.findUnique({
-      where: { id: body.universityId },
+      where: { id: body.universityId, userId },
     });
 
     if (!university) {

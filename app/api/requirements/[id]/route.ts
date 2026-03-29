@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { UpdateRequirementInput } from '@/types';
 
@@ -11,16 +12,20 @@ export async function PATCH(
   request: NextRequest,
   context: RouteContext
 ) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { id } = await context.params;
     const body: UpdateRequirementInput = await request.json();
 
-    // Check if requirement exists
+    // Check if requirement exists and belongs to this user's university
     const existingRequirement = await prisma.requirement.findUnique({
       where: { id },
+      include: { university: { select: { userId: true } } },
     });
 
-    if (!existingRequirement) {
+    if (!existingRequirement || existingRequirement.university.userId !== userId) {
       return NextResponse.json(
         { error: 'Requirement not found' },
         { status: 404 }
@@ -53,15 +58,19 @@ export async function DELETE(
   request: NextRequest,
   context: RouteContext
 ) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const { id } = await context.params;
 
-    // Check if requirement exists
+    // Check if requirement exists and belongs to this user's university
     const existingRequirement = await prisma.requirement.findUnique({
       where: { id },
+      include: { university: { select: { userId: true } } },
     });
 
-    if (!existingRequirement) {
+    if (!existingRequirement || existingRequirement.university.userId !== userId) {
       return NextResponse.json(
         { error: 'Requirement not found' },
         { status: 404 }

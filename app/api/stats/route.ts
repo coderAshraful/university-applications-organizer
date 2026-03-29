@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { ApiResponse, DashboardStats } from '@/types';
 
 export async function GET(request: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) {
+    const response: ApiResponse<DashboardStats> = { error: 'Unauthorized' };
+    return NextResponse.json(response, { status: 401 });
+  }
+
   try {
-    // Get all universities with their status
+    // Get all universities for this user with their status
     const universities = await prisma.university.findMany({
+      where: { userId },
       select: {
         status: true,
       },
