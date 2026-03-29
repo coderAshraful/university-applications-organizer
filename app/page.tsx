@@ -2,47 +2,41 @@ import StatsOverview from '@/components/dashboard/StatsOverview';
 import UpcomingDeadlines from '@/components/dashboard/UpcomingDeadlines';
 import QuickActions from '@/components/dashboard/QuickActions';
 import { DashboardStats, UpcomingDeadline } from '@/types';
+import { prisma } from '@/lib/db';
 
 async function getDashboardData() {
   try {
-    // Fetch stats
-    const statsRes = await fetch(`http://localhost:3000/api/stats`, {
-      cache: 'no-store',
+    // Fetch stats directly from DB
+    const universities = await prisma.university.findMany({ select: { status: true } });
+    const stats: DashboardStats = {
+      total: universities.length,
+      considering: universities.filter(u => u.status === 'considering').length,
+      applied: universities.filter(u => u.status === 'applied').length,
+      accepted: universities.filter(u => u.status === 'accepted').length,
+      waitlisted: universities.filter(u => u.status === 'waitlisted').length,
+      rejected: universities.filter(u => u.status === 'rejected').length,
+      enrolled: universities.filter(u => u.status === 'enrolled').length,
+    };
+
+    // Fetch upcoming deadlines directly from DB
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 30);
+    const rawDeadlines = await prisma.deadline.findMany({
+      where: { completed: false, date: { lte: futureDate } },
+      include: { university: { select: { id: true, name: true } } },
+      orderBy: { date: 'asc' },
     });
 
-    if (!statsRes.ok) {
-      throw new Error('Failed to fetch stats');
-    }
-
-    const statsData = await statsRes.json();
-    const stats: DashboardStats = statsData.data;
-
-    // Fetch upcoming deadlines
-    const deadlinesRes = await fetch(`http://localhost:3000/api/deadlines?upcoming=30`, {
-      cache: 'no-store',
+    const deadlines: UpcomingDeadline[] = rawDeadlines.map(d => {
+      const diffDays = Math.ceil((new Date(d.date).getTime() - Date.now()) / 86400000);
+      return { id: d.id, title: d.title, date: d.date, type: d.type as UpcomingDeadline['type'], universityId: d.universityId, universityName: d.university.name, daysUntil: diffDays };
     });
-
-    if (!deadlinesRes.ok) {
-      throw new Error('Failed to fetch deadlines');
-    }
-
-    const deadlinesData = await deadlinesRes.json();
-    const deadlines: UpcomingDeadline[] = deadlinesData.data || [];
 
     return { stats, deadlines };
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
-    // Return empty data on error
     return {
-      stats: {
-        total: 0,
-        considering: 0,
-        applied: 0,
-        accepted: 0,
-        waitlisted: 0,
-        rejected: 0,
-        enrolled: 0,
-      },
+      stats: { total: 0, considering: 0, applied: 0, accepted: 0, waitlisted: 0, rejected: 0, enrolled: 0 },
       deadlines: [],
     };
   }
