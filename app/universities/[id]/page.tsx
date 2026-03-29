@@ -261,6 +261,34 @@ export default function UniversityDetailPage() {
     }
   };
 
+  const handleToggleDeadline = async (deadlineId: string) => {
+    if (!university) return;
+
+    const deadline = university.deadlines?.find((d) => d.id === deadlineId);
+    if (!deadline) return;
+
+    try {
+      const res = await fetch(`/api/deadlines/${deadlineId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed: !deadline.completed }),
+      });
+
+      const data = await res.json();
+
+      if (data.data) {
+        setUniversity({
+          ...university,
+          deadlines: university.deadlines?.map((d) =>
+            d.id === deadlineId ? data.data : d
+          ),
+        });
+      }
+    } catch (error) {
+      console.error('Error toggling deadline:', error);
+    }
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -375,6 +403,7 @@ export default function UniversityDetailPage() {
               onAdd={handleAddDeadline}
               onEdit={handleEditDeadline}
               onDelete={handleDeleteDeadline}
+              onToggle={handleToggleDeadline}
             />
 
             {/* Financial Info */}
