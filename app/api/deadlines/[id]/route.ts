@@ -32,11 +32,16 @@ export async function PATCH(
       );
     }
 
-    // Convert string date to Date object
-    const data: any = { ...body };
-    if (data.date) {
-      data.date = new Date(data.date);
-    }
+    // Whitelist updatable fields — never trust the raw body, which could
+    // include universityId and reassign the row to another user's university.
+    const { title, date, type, description, completed, reminderDays } = body;
+    const data: Record<string, unknown> = {};
+    if (title !== undefined) data.title = title;
+    if (type !== undefined) data.type = type;
+    if (description !== undefined) data.description = description;
+    if (completed !== undefined) data.completed = completed;
+    if (reminderDays !== undefined) data.reminderDays = reminderDays;
+    if (date !== undefined) data.date = new Date(date);
 
     const deadline = await prisma.deadline.update({
       where: { id },

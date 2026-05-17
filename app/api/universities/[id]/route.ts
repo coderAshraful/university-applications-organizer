@@ -71,19 +71,54 @@ export async function PATCH(
       );
     }
 
-    // Convert string dates to Date objects
-    const data: any = { ...body };
-    if (data.applicationDeadline) {
-      data.applicationDeadline = new Date(data.applicationDeadline);
+    // Whitelist updatable fields — never trust the raw body, which could
+    // include userId and transfer ownership of the row to another user.
+    const {
+      name,
+      location,
+      program,
+      status,
+      category,
+      ranking,
+      acceptanceRate,
+      websiteUrl,
+      notes,
+      researchNotes,
+      applicationDeadline,
+      earlyDeadline,
+      decisionDate,
+      tuition,
+      applicationFee,
+      estimatedCostOfLiving,
+      financialAidDeadline,
+      scholarshipNotes,
+    } = body;
+    const data: Record<string, unknown> = {};
+    if (name !== undefined) data.name = name;
+    if (location !== undefined) data.location = location;
+    if (program !== undefined) data.program = program;
+    if (status !== undefined) data.status = status;
+    if (category !== undefined) data.category = category;
+    if (ranking !== undefined) data.ranking = ranking;
+    if (acceptanceRate !== undefined) data.acceptanceRate = acceptanceRate;
+    if (websiteUrl !== undefined) data.websiteUrl = websiteUrl;
+    if (notes !== undefined) data.notes = notes;
+    if (researchNotes !== undefined) data.researchNotes = researchNotes;
+    if (tuition !== undefined) data.tuition = tuition;
+    if (applicationFee !== undefined) data.applicationFee = applicationFee;
+    if (estimatedCostOfLiving !== undefined) data.estimatedCostOfLiving = estimatedCostOfLiving;
+    if (scholarshipNotes !== undefined) data.scholarshipNotes = scholarshipNotes;
+    if (applicationDeadline !== undefined) {
+      data.applicationDeadline = applicationDeadline === null ? null : new Date(applicationDeadline);
     }
-    if (data.earlyDeadline) {
-      data.earlyDeadline = new Date(data.earlyDeadline);
+    if (earlyDeadline !== undefined) {
+      data.earlyDeadline = earlyDeadline === null ? null : new Date(earlyDeadline);
     }
-    if (data.decisionDate) {
-      data.decisionDate = new Date(data.decisionDate);
+    if (decisionDate !== undefined) {
+      data.decisionDate = decisionDate === null ? null : new Date(decisionDate);
     }
-    if (data.financialAidDeadline) {
-      data.financialAidDeadline = new Date(data.financialAidDeadline);
+    if (financialAidDeadline !== undefined) {
+      data.financialAidDeadline = financialAidDeadline === null ? null : new Date(financialAidDeadline);
     }
 
     const university = await prisma.university.update({
